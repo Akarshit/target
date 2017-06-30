@@ -30,7 +30,7 @@ api.updatePrice = async (req, res) => {
         || is.not.propertyDefined(product.current_price, 'value')
         || is.not.propertyDefined(product.current_price, 'currency_code')
         || is.not.number(product.current_price.value)) {
-        res.status(400).json("Invalid body");
+        res.status(400).json({ message: "body is not in expected format", format: { current_price: { value: "Integer", currency_code: "String"}}});
         return;
     }
     const id = Number(req.params.id);
