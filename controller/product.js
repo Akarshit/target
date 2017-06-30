@@ -9,7 +9,11 @@ const Product = require(path.join(global.SERVER_ROOT, 'mongo-model', 'product'))
 const { mapAsync } = require(path.join(global.SERVER_ROOT, 'utils'));
 
 api.getProduct = async (req, res) => {
-    const id = req.params.id;
+    const id = Number(req.params.id);
+    if (is.not.number(id)) {
+        res.status(400).json("Invalid Id");
+        return;
+    }
     const product = await Product.getProduct(id);
     if (product === null) {
         res.status(400).json("Id not in database");
@@ -22,7 +26,18 @@ api.getProduct = async (req, res) => {
 
 api.updatePrice = async (req, res) => {
     const product = req.body;
-    const id = req.params.id;
+    if (is.not.propertyDefined(product, 'current_price')
+        || is.not.propertyDefined(product.current_price, 'value')
+        || is.not.propertyDefined(product.current_price, 'currency_code')
+        || is.not.number(product.current_price.value)) {
+        res.status(400).json("Invalid body");
+        return;
+    }
+    const id = Number(req.params.id);
+    if (is.not.number(id)) {
+        res.status(400).json("Invalid Id");
+        return;
+    }
     const result = await Product.updatePrice(id, product);
     if (result === null) {
         res.status(400).json("Id not in database");
