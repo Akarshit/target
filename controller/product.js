@@ -19,9 +19,15 @@ api.getProduct = async (req, res) => {
         res.status(400).json("Id not in database");
         return;
     }
-    const metadata = JSON.parse(await rp(`https://api.target.com/products/v3/${product.id}?fields=descriptions&id_type=TCIN&key=43cJWpLjH8Z8oR18KdrZDBKAgLLQKJjz`));
+    const metadata = JSON.parse(await rp(`https://api.target.com/products/v3/${id}?fields=descriptions&id_type=TCIN&key=43cJWpLjH8Z8oR18KdrZDBKAgLLQKJjz`));
     product.name = sa(metadata, 'product_composite_response.items[0].online_description.value')
     res.status(200).json(product);
+}
+
+api.putProduct = async (req, res) => {
+    const product = req.body;
+    const result = await Product.putProduct(product);
+    res.status(200).json(result);
 }
 
 api.updatePrice = async (req, res) => {
@@ -43,7 +49,7 @@ api.updatePrice = async (req, res) => {
         res.status(400).json("Id not in database");
         return;
     }
-    res.status(200).json(product);
+    res.status(200).json(result);
 }
 
 module.exports = mapAsync(api);
