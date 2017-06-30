@@ -20,10 +20,11 @@ api.getProduct = async (req, res) => {
     
 }
 
-api.putProduct = async (req, res) => {
+api.updatePrice = async (req, res) => {
     const product = req.body;
-    const result = await Product.putProduct(product);
-    res.status(200).json(result);
+    const id = req.params.id;
+    const result = await Product.updatePrice(id, product);
+    res.status(200).json(product);
 }
 
 module.exports = mapAsync(api);
