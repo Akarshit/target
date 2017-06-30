@@ -30,7 +30,7 @@ productSchema.statics.getProduct = async function (id) {
 }
 
 productSchema.statics.updatePrice = async function (id, product) {
-    return this.findOneAndUpdate({ id: product.id }, { $set:{ current_price: product.current_price } });
+    return this.findOneAndUpdate({ id: id }, { $set:{ current_price: product.current_price } });
 }
 
 module.exports = mongoose.model('product', productSchema);
